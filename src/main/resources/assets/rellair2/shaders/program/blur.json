@@ -1,0 +1,19 @@
+{
+  "program": [
+    {
+      "name": "vertex",
+      "vertex": "v_blur.glsl"
+    },
+    {
+      "name": "fragment",
+      "fragment": "f_blur.glsl"
+    }
+  ],
+  "options": [
+    {
+      "name": "intensity",
+      "type": "uniform1f",
+      "value": 0.01
+    }
+  ]
+}

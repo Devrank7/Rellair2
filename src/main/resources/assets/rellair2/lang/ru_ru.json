@@ -1,0 +1,12 @@
+{
+  "item.rellair.i_dir.effect.empty" : "грязная вода",
+  "item.rellair.soul" : "лампа души",
+  "item.rellair.empty_water" : "пустой брюдок с водой",
+  "item.rellair.fluid_water" : "наполненый брюдок с водой",
+  "item.rellair.thermometr_item" : "термометр",
+  "effect.rellair.grace" : "неуюзвимость к климату",
+  "effect.rellair.possion" : "жажда",
+  "effect.rellair.effect_freeze" : "заморозка(гипотермия)",
+  "effect.rellair.effect_hot_blur" : "жар"
+
+}

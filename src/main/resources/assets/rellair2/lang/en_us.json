@@ -1,0 +1,11 @@
+{
+  "item.rellair.i_dir.effect.empty" : "dirty water",
+  "item.rellair.soul" : "soul lamp",
+  "item.rellair.empty_water" : "empty waterskin",
+  "item.rellair.fluid_water" : "fluid waterskin",
+  "item.rellair.thermometr_item" : "thermometer",
+  "effect.rellair.grace" : "grace",
+  "effect.rellair.possion" : "thirst",
+  "effect.rellair.effect_freeze" : "freeze",
+  "effect.rellair.effect_hot_blur" : "hot blur"
+}
