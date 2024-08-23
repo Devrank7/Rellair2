@@ -3,21 +3,21 @@ package org.rellair2.com.temperature.manager.valuable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
-import org.rellair2.com.api.handlers.IHandler;
 import org.rellair2.com.api.handlers.temperature.ITemperatureHandler;
 import org.rellair2.com.api.manager.valuable.IValuableManager;
+import org.rellair2.com.api.manager.valuable.temperature.ITemperatureValuable;
+import org.rellair2.com.api.networking.IValuablePacket;
 import org.rellair2.com.api.valuable.IValuable;
 import org.rellair2.com.network.packet.ChangeTemperature;
-import org.rellair2.com.api.networking.IValuablePacket;
-import org.rellair2.com.temperature.handlers.TemperatureChangeHandler;
 import org.rellair2.com.temperature.TemperatureValuable;
+import org.rellair2.com.temperature.handlers.TemperatureChangeHandler;
 import org.rellair2.com.temperature.handlers.TemperatureEffectHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class TemperatureDataValuable extends IValuableManager<Float, ITemperatureHandler<Float>> {
+public class TemperatureDataValuable extends ITemperatureValuable<Float, ITemperatureHandler<Float>> {
 
     IValuable<Float> valuable = new TemperatureValuable<>(0f);
 

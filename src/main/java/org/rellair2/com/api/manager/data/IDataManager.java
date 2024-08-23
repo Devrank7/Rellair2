@@ -6,7 +6,7 @@ import org.rellair2.com.api.manager.valuable.IValuableManager;
 
 import java.util.Map;
 
-public abstract class IDataManager {
+public abstract class IDataManager<V extends IValuableManager<?,?>> {
     protected Player player;
 
     public IDataManager(Player player) {
@@ -20,12 +20,12 @@ public abstract class IDataManager {
 
     public abstract void addAdditionalSaveData(CompoundTag p_36265_);
 
-    public abstract void copyFrom(IDataManager p_36221_);
+    public abstract void copyFrom(IDataManager<?> p_36221_);
 
     @SuppressWarnings("unchecked")
     public <T extends IValuableManager<?,?>> T getData(Class<T> clazz) {
         return (T) valuableManagers().get(clazz);
     }
 
-    public abstract Map<Class<? extends IValuableManager<?,?>>, IValuableManager<?,?>> valuableManagers();
+    public abstract Map<Class<? extends V>, V> valuableManagers();
 }

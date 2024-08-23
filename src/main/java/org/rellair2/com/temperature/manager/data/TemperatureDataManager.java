@@ -4,24 +4,25 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import org.rellair2.com.api.manager.data.IDataManager;
 import org.rellair2.com.api.manager.valuable.IValuableManager;
+import org.rellair2.com.api.manager.valuable.temperature.ITemperatureValuable;
 import org.rellair2.com.temperature.manager.valuable.TemperatureDataValuable;
 import org.rellair2.com.temperature.manager.valuable.TestManagerValuable;
 
 import java.util.Map;
 
-public class TemperatureDataManager extends IDataManager {
+public class TemperatureDataManager extends IDataManager<ITemperatureValuable<?,?>> {
 
 
     public TemperatureDataManager(Player player) {
         super(player);
     }
-    private Map<Class<? extends IValuableManager<?,?>>, IValuableManager<?,?>> dataManagers;
+    private Map<Class<? extends ITemperatureValuable<?,?>>, ITemperatureValuable<?,?>> dataManagers;
 
     @Override
     public void init() {
         dataManagers = Map.of(
-                TemperatureDataValuable.class,new TemperatureDataValuable(this.player),
-                TestManagerValuable.class, new TestManagerValuable(this.player)
+                TemperatureDataValuable.class,new TemperatureDataValuable(this.player)//,
+                //TestManagerValuable.class, new TestManagerValuable(this.player)
         );
     }
 
@@ -36,7 +37,7 @@ public class TemperatureDataManager extends IDataManager {
     }
 
     @Override
-    public void copyFrom(IDataManager p_36221_) {
+    public void copyFrom(IDataManager<?> p_36221_) {
         for (IValuableManager<?,?> data : dataManagers.values()) {
             for (IValuableManager<?,?> data2 : p_36221_.valuableManagers().values()) {
                 copyValuable(data, data2);
@@ -51,7 +52,7 @@ public class TemperatureDataManager extends IDataManager {
     }
 
     @Override
-    public Map<Class<? extends IValuableManager<?,?>>, IValuableManager<?,?>> valuableManagers() {
+    public Map<Class<? extends ITemperatureValuable<?,?>>, ITemperatureValuable<?,?>> valuableManagers() {
         return dataManagers;
     }
 }

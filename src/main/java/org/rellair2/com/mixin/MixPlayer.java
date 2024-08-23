@@ -19,7 +19,7 @@ import java.util.Map;
 @Mixin(Player.class)
 public abstract class MixPlayer extends LivingEntity implements IRPlayer {
     @Unique
-    private final Map<Class<? extends IDataManager>, IDataManager> save_data = Map.of(
+    private final Map<Class<? extends IDataManager<?>>, IDataManager<?>> save_data = Map.of(
             TemperatureDataManager.class, new TemperatureDataManager(myself())
     );
 
@@ -47,19 +47,19 @@ public abstract class MixPlayer extends LivingEntity implements IRPlayer {
 
 
     @Override
-    public Map<Class<? extends IDataManager>, IDataManager> getAllData() {
+    public Map<Class<? extends IDataManager<?>>, IDataManager<?>> getAllData() {
         return this.save_data;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends IDataManager> T getData(Class<T> clazz) {
+    public <T extends IDataManager<?>> T getData(Class<T> clazz) {
         return (T) save_data.get(clazz);
     }
 
     @Override
     public void copyData(IRPlayer player) {
-        for (Map.Entry<Class<? extends IDataManager>, IDataManager> entry : player.getAllData().entrySet()) {
+        for (Map.Entry<Class<? extends IDataManager<?>>, IDataManager<?>> entry : player.getAllData().entrySet()) {
             save_data.get(entry.getKey()).copyFrom(entry.getValue());
         }
     }
