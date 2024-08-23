@@ -23,9 +23,9 @@ public abstract class IDataManager {
     public abstract void copyFrom(IDataManager p_36221_);
 
     @SuppressWarnings("unchecked")
-    public <T extends IValuableManager<?>> T getData(Class<T> clazz) {
+    public <T extends IValuableManager<?,?>> T getData(Class<T> clazz) {
         return (T) valuableManagers().get(clazz);
     }
 
-    public abstract Map<Class<? extends IValuableManager<?>>, IValuableManager<?>> valuableManagers();
+    public abstract Map<Class<? extends IValuableManager<?,?>>, IValuableManager<?,?>> valuableManagers();
 }

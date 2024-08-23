@@ -15,7 +15,7 @@ public class TemperatureDataManager extends IDataManager {
     public TemperatureDataManager(Player player) {
         super(player);
     }
-    private Map<Class<? extends IValuableManager<?>>, IValuableManager<?>> dataManagers;
+    private Map<Class<? extends IValuableManager<?,?>>, IValuableManager<?,?>> dataManagers;
 
     @Override
     public void init() {
@@ -37,21 +37,21 @@ public class TemperatureDataManager extends IDataManager {
 
     @Override
     public void copyFrom(IDataManager p_36221_) {
-        for (IValuableManager<?> data : dataManagers.values()) {
-            for (IValuableManager<?> data2 : p_36221_.valuableManagers().values()) {
+        for (IValuableManager<?,?> data : dataManagers.values()) {
+            for (IValuableManager<?,?> data2 : p_36221_.valuableManagers().values()) {
                 copyValuable(data, data2);
             }
         }
     }
     @SuppressWarnings("unchecked")
-    private <T> void copyValuable(IValuableManager<T> data1, IValuableManager<?> data2) {
+    private <T> void copyValuable(IValuableManager<T,?> data1, IValuableManager<?,?> data2) {
         if (data1.getValuable().getValue().getClass().isAssignableFrom(data2.getValuable().getValue().getClass())) {
             data1.getValuable().setValue((T) data2.getValuable().getValue());
         }
     }
 
     @Override
-    public Map<Class<? extends IValuableManager<?>>, IValuableManager<?>> valuableManagers() {
+    public Map<Class<? extends IValuableManager<?,?>>, IValuableManager<?,?>> valuableManagers() {
         return dataManagers;
     }
 }

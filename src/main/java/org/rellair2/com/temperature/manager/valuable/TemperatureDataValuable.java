@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.rellair2.com.api.handlers.IHandler;
+import org.rellair2.com.api.handlers.temperature.ITemperatureHandler;
 import org.rellair2.com.api.manager.valuable.IValuableManager;
 import org.rellair2.com.api.valuable.IValuable;
 import org.rellair2.com.network.packet.ChangeTemperature;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class TemperatureDataValuable extends IValuableManager<Float> {
+public class TemperatureDataValuable extends IValuableManager<Float, ITemperatureHandler<Float>> {
 
     IValuable<Float> valuable = new TemperatureValuable<>(0f);
 
@@ -56,7 +57,7 @@ public class TemperatureDataValuable extends IValuableManager<Float> {
     }
 
     @Override
-    protected List<IHandler<Float>> getHandlers() {
+    protected List<ITemperatureHandler<Float>> getHandlers() {
         return new ArrayList<>(List.of(
                 new TemperatureChangeHandler(),
                 new TemperatureEffectHandler()

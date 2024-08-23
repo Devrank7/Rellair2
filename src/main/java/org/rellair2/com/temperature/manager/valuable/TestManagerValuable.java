@@ -3,6 +3,7 @@ package org.rellair2.com.temperature.manager.valuable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import org.rellair2.com.api.handlers.IHandler;
+import org.rellair2.com.api.handlers.temperature.ITemperatureHandler;
 import org.rellair2.com.api.manager.valuable.IValuableManager;
 import org.rellair2.com.api.valuable.IValuable;
 import org.rellair2.com.api.networking.IValuablePacket;
@@ -10,7 +11,7 @@ import org.rellair2.com.api.networking.IValuablePacket;
 import java.util.List;
 import java.util.function.Function;
 
-public class TestManagerValuable extends IValuableManager<String> {
+public class TestManagerValuable extends IValuableManager<String, ITemperatureHandler<String>> {
 
     public TestManagerValuable(Player player) {
         super(player);
@@ -57,7 +58,7 @@ public class TestManagerValuable extends IValuableManager<String> {
     }
 
     @Override
-    protected List<IHandler<String>> getHandlers() {
+    protected List<ITemperatureHandler<String>> getHandlers() {
         return List.of();
     }
 }

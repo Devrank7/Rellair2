@@ -1,9 +1,10 @@
 package org.rellair2.com.temperature.handlers;
 
 import net.minecraft.world.entity.player.Player;
-import org.rellair2.com.api.handlers.IChangeHandler;
+import org.rellair2.com.ann.IsInteger;
+import org.rellair2.com.api.handlers.temperature.ITemperatureHandler;
 
-public class TemperatureChangeHandler implements IChangeHandler<Float> {
+public class TemperatureChangeHandler implements ITemperatureHandler<Float> {
 
     @Override
     public Float handle(Player player, Float value) {
@@ -13,5 +14,10 @@ public class TemperatureChangeHandler implements IChangeHandler<Float> {
             return f;
         }
         return value;
+    }
+
+    @Override
+    public boolean needToChange() {
+        return true;
     }
 }

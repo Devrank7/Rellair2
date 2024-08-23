@@ -13,7 +13,7 @@ import org.rellair2.com.network.ModMessage;
 import java.util.List;
 import java.util.function.Function;
 
-public abstract class IValuableManager<T> implements IObserverTick {
+public abstract class IValuableManager<T,V extends IHandler<T>> implements IObserverTick {
 
     protected Player player;
 
@@ -32,7 +32,7 @@ public abstract class IValuableManager<T> implements IObserverTick {
     public final void tick() {
         if (player.level().getGameTime() % frequency == 0) {
             frequencyTick();
-            RemoteController<T> remoteController = new RemoteController<>(
+            RemoteController<T,V> remoteController = new RemoteController<>(
                     new RemoteController.RemoteControllerData<>(
                             getHandlers(),
                             player,
@@ -49,7 +49,7 @@ public abstract class IValuableManager<T> implements IObserverTick {
 
     protected abstract void frequencyTick();
 
-    protected abstract List<IHandler<T>> getHandlers();
+    protected abstract List<V> getHandlers();
 
     protected abstract Function<T, IValuablePacket<T>> getPacket();
 

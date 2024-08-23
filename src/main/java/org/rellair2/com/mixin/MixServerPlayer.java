@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.rellair2.com.ann.IsInteger;
 import org.rellair2.com.temperature.manager.data.TemperatureDataManager;
 import org.rellair2.com.temperature.manager.valuable.TemperatureDataValuable;
 import org.rellair2.com.api.mixins.IRPlayer;

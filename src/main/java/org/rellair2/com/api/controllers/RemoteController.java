@@ -6,25 +6,25 @@ import org.rellair2.com.api.valuable.IValuable;
 
 import java.util.List;
 
-public class RemoteController<T> {
+public class RemoteController<T,V extends IHandler<T>> {
 
-    private RemoteControllerData<T> handler;
+    private RemoteControllerData<T,V> handler;
 
-    public RemoteController(RemoteControllerData<T> handler) {
+    public RemoteController(RemoteControllerData<T,V> handler) {
         this.handler = handler;
     }
 
-    private void press(IHandler<T> handler) {
+    private void press(V handler) {
         T newValue = handler.handle(this.handler.player, this.handler.valuable.getValue());
         if (handler.needToChange()) {
             this.handler.valuable.setValue(newValue);
         }
     }
     public void start() {
-        for (IHandler<T> handler : this.handler.handlers) {
+        for (V handler : this.handler.handlers) {
             this.press(handler);
         }
     }
 
-    public record RemoteControllerData<T>(List<IHandler<T>> handlers, Player player, IValuable<T> valuable) {}
+    public record RemoteControllerData<T,V>(List<V> handlers, Player player, IValuable<T> valuable) {}
 }
