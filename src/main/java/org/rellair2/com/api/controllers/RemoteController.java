@@ -15,10 +15,7 @@ public class RemoteController<T,V extends IHandler<T>> {
     }
 
     private void press(V handler) {
-        T newValue = handler.handle(this.handler.player, this.handler.valuable.getValue());
-        if (handler.needToChange()) {
-            this.handler.valuable.setValue(newValue);
-        }
+        handler.handle(this.handler.player, this.handler.valuable);
     }
     public void start() {
         for (V handler : this.handler.handlers) {

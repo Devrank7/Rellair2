@@ -27,6 +27,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.server.command.ForgeCommand;
+import org.rellair2.com.command.CommandReg;
+import org.rellair2.com.effects.RMobEffectRegister;
 import org.rellair2.com.network.ModMessage;
 import org.slf4j.Logger;
 
@@ -74,6 +77,8 @@ public class Rellair2 {
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+        RMobEffectRegister.EFFECT.register(modEventBus);
+        MinecraftForge.EVENT_BUS.register(CommandReg.class);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

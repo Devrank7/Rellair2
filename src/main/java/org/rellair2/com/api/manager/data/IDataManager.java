@@ -2,16 +2,25 @@ package org.rellair2.com.api.manager.data;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import org.rellair2.com.api.IObserverTick;
 import org.rellair2.com.api.manager.valuable.IValuableManager;
+import org.rellair2.com.temperature.handlers.deal.IStateHandler;
 
 import java.util.Map;
 
-public abstract class IDataManager<V extends IValuableManager<?,?>> {
+public abstract class IDataManager<V extends IValuableManager<?,?>> implements IObserverTick {
     protected Player player;
 
     public IDataManager(Player player) {
         this.player = player;
         init();
+    }
+
+    @Override
+    public void tick() {
+        if (player.level().getGameTime() % 5 == 0) {
+
+        }
     }
 
     public abstract void init();

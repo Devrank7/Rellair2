@@ -1,32 +1,26 @@
 package org.rellair2.com.temperature.type;
 
-import net.minecraft.util.valueproviders.UniformFloat;
+public enum TypeTemperature {
+    C,
+    F(1.8f,0),
+    K(1f,273.15f);
+    private final float multi;
+    private final float offset;
 
-import java.util.Arrays;
-
-public class TypeTemperature {
-    public enum Type {
-        C, F
+    TypeTemperature() {
+        this(1f,0);
     }
 
-    public enum TempType {
-        ICY(UniformFloat.of(-11,-7)),
-        BITTER_COLD(UniformFloat.of(-7,-5)),
-        COLD(UniformFloat.of(-5,-3)),
-        CHILLY(UniformFloat.of(-3,-1)),
-        NORMAL(UniformFloat.of(-1,1)),
-        LITTLE_WARM(UniformFloat.of(1,3)),
-        WARM(UniformFloat.of(3,5)),
-        VERY_WARM(UniformFloat.of(5,7)),
-        HOT(UniformFloat.of(7,11)),;
+    TypeTemperature(float multi, float offset) {
+        this.multi = multi;
+        this.offset = offset;
+    }
 
-        private UniformFloat uniformFloat;
+    public float getMulti() {
+        return multi;
+    }
 
-        TempType(UniformFloat uniformFloat) {
-            this.uniformFloat = uniformFloat;
-        }
-        public static TempType findBy(float temperature) {
-            return Arrays.stream(values()).filter(p -> p.uniformFloat.getMinValue() <= temperature && p.uniformFloat.getMaxValue() >= temperature).findFirst().orElse(TempType.ICY);
-        }
+    public float getOffset() {
+        return offset;
     }
 }

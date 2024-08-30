@@ -1,37 +1,46 @@
 package org.rellair2.com.gui;
 
-import net.minecraft.resources.ResourceLocation;
-import org.rellair2.com.Rellair2;
-import org.rellair2.com.api.gui.IGuiRender;
-import org.rellair2.com.temperature.manager.valuable.TemperatureDataValuable;
-import org.rellair2.com.temperature.type.TypeTemperature;
-import org.rellair2.com.temperature.manager.data.TemperatureDataManager;
-import org.rellair2.com.api.gui.GuiInfo;
+import org.rellair2.com.api.gui.*;
 import org.rellair2.com.api.mixins.IRPlayer;
+import org.rellair2.com.api.temperature.IArrowDrawer;
+import org.rellair2.com.api.temperature.IClientTemperatureType;
+import org.rellair2.com.api.temperature.ITemperatureType;
+import org.rellair2.com.api.temperature.TempType;
+import org.rellair2.com.api.temperature.fsm.StateMachine;
+import org.rellair2.com.temperature.manager.data.TemperatureDataManager;
+import org.rellair2.com.temperature.manager.valuable.TemperatureDataValuable;
 
-import java.util.Map;
+import java.util.List;
+import java.util.Optional;
 
-public class GuiRenderTemperature implements IGuiRender {
+public class GuiRenderTemperature extends IGuiRender {
 
-    private static final Map<TypeTemperature.TempType, ResourceLocation> map_sprites = Map.of(
-            TypeTemperature.TempType.ICY, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t0"),
-            TypeTemperature.TempType.BITTER_COLD, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t1"),
-            TypeTemperature.TempType.COLD, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t2"),
-            TypeTemperature.TempType.CHILLY, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t3"),
-            TypeTemperature.TempType.NORMAL, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t4"),
-            TypeTemperature.TempType.LITTLE_WARM, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t5"),
-            TypeTemperature.TempType.WARM, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t6"),
-            TypeTemperature.TempType.VERY_WARM, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t7"),
-            TypeTemperature.TempType.HOT, ResourceLocation.fromNamespaceAndPath(Rellair2.MODID, "hud/t8")
-    );
+    public StateMachine<ITemperatureType> stateMachine = new StateMachine<>();
 
     @Override
     public void tick(GuiInfo guiInfo) {
-        IRPlayer irPlayer = (IRPlayer) guiInfo.player();
-        if (guiInfo.player().getRandom().nextInt(100) == 0) {
-            System.err.println("Rendering = " + irPlayer.getData(TemperatureDataManager.class).getData(TemperatureDataValuable.class).getValuable().getValue());
-        }
-        float temperature = irPlayer.getData(TemperatureDataManager.class).getData(TemperatureDataValuable.class).getValuable().getValue();
-        guiInfo.graphics().blitSprite(map_sprites.get(TypeTemperature.TempType.findBy(temperature - 12)), ((guiInfo.width() / 2) - 8), (guiInfo.height() - 54), 16, 16);
+        stateMachine.tick();
+        super.tick(guiInfo);
     }
+
+    @Override
+    protected void addOptions(List<IGuiGraphics> options, GuiInfo guiInfo) {
+        float temperature = ((IRPlayer) guiInfo.player()).getData(TemperatureDataManager.class).getData(TemperatureDataValuable.class).getValuable().getValue();
+        IClientTemperatureType clientTemperatureType = stateMachine.setIfOther((ITemperatureType) TempType.getNorClientType(temperature).apply(guiInfo.width(), guiInfo.height()), guiInfo.width(), guiInfo.height(), temperature);
+        IArrowDrawer arrow = stateMachine.setIfOther((ITemperatureType) TempType.getNorClientType(temperature).apply(guiInfo.width(), guiInfo.height()), guiInfo.width(), guiInfo.height(), temperature);
+        Optional.ofNullable(arrow).ifPresent(p -> {
+            options.add(new GuiArrowGraphics(guiInfo.graphics(), p.getDirection().getV(), p.getDirection().getU(Math.min(15, p.getDirectionIndex())), guiInfo.width() / 2 - 24, (guiInfo.height() - 54)));
+        });
+        Optional.ofNullable(clientTemperatureType).ifPresent(i -> {
+            options.add(new GuiSpriteGraphics(i.getMain(), guiInfo.graphics()));
+            i.getMics().keySet().forEach(p -> {
+                AdvanceGuiData advanceGuiData = i.getMics().get(p);
+                options.add(new GuiMicsGraphics(advanceGuiData.getLocation(), guiInfo.graphics(), 0, 0, guiInfo.width(), guiInfo.height(), advanceGuiData.getStrength()));
+            });
+        });
+        stateMachine.lastDraws().forEach(p -> {
+            options.add(new GuiMicsGraphics(p.getLocation(), guiInfo.graphics(),0,0, guiInfo.width(), guiInfo.height(), p.getStrength()));
+        });
+    }
+
 }

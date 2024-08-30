@@ -14,6 +14,7 @@ public class ChangeTemperature extends IValuablePacket<Float> {
     public ChangeTemperature(float temp) {
         super(temp);
     }
+
     public static ChangeTemperature decode(FriendlyByteBuf buffer) {
         return new ChangeTemperature(buffer.readFloat());
     }
@@ -23,13 +24,10 @@ public class ChangeTemperature extends IValuablePacket<Float> {
         buffer.writeFloat(temp);
     }
 
-    public void handle(CustomPayloadEvent.Context event) {
-        if (event.isClientSide()) {
-            LocalPlayer localPlayer = Minecraft.getInstance().player;
-            if (localPlayer instanceof IRPlayer irPlayer) {
-                System.err.println("Set temperature: " + temp);
-                irPlayer.getData(TemperatureDataManager.class).getData(TemperatureDataValuable.class).getValuable().setValue(temp);
-            }
+    public void handleClient(CustomPayloadEvent.Context event) {
+        LocalPlayer localPlayer = Minecraft.getInstance().player;
+        if (localPlayer instanceof IRPlayer irPlayer) {
+            irPlayer.getData(TemperatureDataManager.class).getData(TemperatureDataValuable.class).getValuable().setValue(temp);
         }
     }
 

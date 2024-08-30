@@ -25,11 +25,11 @@ public abstract class IValuableManager<T,V extends IHandler<T>> implements IObse
 
     protected final void send(ServerPlayer serverPlayer, T value) {
         if (getPacket() == null) return;
-        ModMessage.sendToPlayer(getPacket().apply(value), serverPlayer);
+        ModMessage.sendToPlayerValuable(getPacket().apply(value), serverPlayer);
     }
 
     @Override
-    public final void tick() {
+    public void tick() {
         if (player.level().getGameTime() % frequency == 0) {
             frequencyTick();
             RemoteController<T,V> remoteController = new RemoteController<>(
@@ -38,7 +38,6 @@ public abstract class IValuableManager<T,V extends IHandler<T>> implements IObse
                             player,
                             getValuable()));
             remoteController.start();
-            System.err.println("hashcode = " + hashCode());
             this.send((ServerPlayer) player, getValuable().getValue());
         }
     }

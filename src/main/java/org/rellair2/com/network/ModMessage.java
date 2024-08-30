@@ -7,8 +7,10 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import org.rellair2.com.Rellair2;
-import org.rellair2.com.network.packet.ChangeTemperature;
+import org.rellair2.com.api.networking.IClientPacket;
+import org.rellair2.com.api.networking.IServerPacket;
 import org.rellair2.com.api.networking.IValuablePacket;
+import org.rellair2.com.network.packet.*;
 
 public class ModMessage {
 
@@ -31,13 +33,47 @@ public class ModMessage {
                 .decoder(ChangeTemperature::decode)
                 .consumerMainThread(ChangeTemperature::handle)
                 .add();
+        INSTANCE.messageBuilder(WorldTemperaturePack.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(WorldTemperaturePack::encode)
+                .decoder(WorldTemperaturePack::decode)
+                .consumerMainThread(WorldTemperaturePack::handle)
+                .add();
+        INSTANCE.messageBuilder(BiomeTemperaturePack.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(BiomeTemperaturePack::encode)
+                .decoder(BiomeTemperaturePack::decode)
+                .consumerMainThread(BiomeTemperaturePack::handle)
+                .add();
+        INSTANCE.messageBuilder(BiomeHumidPack.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(BiomeHumidPack::encode)
+                .decoder(BiomeHumidPack::decode)
+                .consumerMainThread(BiomeHumidPack::handle)
+                .add();
+        INSTANCE.messageBuilder(SpeedBiomePack.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(SpeedBiomePack::encode)
+                .decoder(SpeedBiomePack::decode)
+                .consumerMainThread(SpeedBiomePack::handle)
+                .add();
+        INSTANCE.messageBuilder(ActivityPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(ActivityPacket::encode)
+                .decoder(ActivityPacket::decode)
+                .consumerMainThread(ActivityPacket::handle)
+                .add();
+        INSTANCE.messageBuilder(WetLevelPack.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(WetLevelPack::encode)
+                .decoder(WetLevelPack::decode)
+                .consumerMainThread(WetLevelPack::handle)
+                .add();
     }
 
-    public static void sendToServer(Object msg) {
+    public static void sendToServer(IServerPacket msg) {
         INSTANCE.send(msg, PacketDistributor.SERVER.noArg());
     }
 
-    public static void sendToPlayer(IValuablePacket<?> msg, ServerPlayer player) {
+    public static void sendToPlayerValuable(IValuablePacket<?> msg, ServerPlayer player) {
+        INSTANCE.send(msg, PacketDistributor.PLAYER.with(player));
+    }
+
+    public static void sendToPlayer(IClientPacket msg, ServerPlayer player) {
         INSTANCE.send(msg, PacketDistributor.PLAYER.with(player));
     }
 }

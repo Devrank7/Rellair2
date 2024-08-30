@@ -5,8 +5,9 @@ import net.minecraft.world.entity.player.Player;
 import org.rellair2.com.api.manager.data.IDataManager;
 import org.rellair2.com.api.manager.valuable.IValuableManager;
 import org.rellair2.com.api.manager.valuable.temperature.ITemperatureValuable;
+import org.rellair2.com.temperature.handlers.deal.IStateHandler;
+import org.rellair2.com.temperature.handlers.deal.TemperatureEffectHandler;
 import org.rellair2.com.temperature.manager.valuable.TemperatureDataValuable;
-import org.rellair2.com.temperature.manager.valuable.TestManagerValuable;
 
 import java.util.Map;
 
@@ -17,6 +18,7 @@ public class TemperatureDataManager extends IDataManager<ITemperatureValuable<?,
         super(player);
     }
     private Map<Class<? extends ITemperatureValuable<?,?>>, ITemperatureValuable<?,?>> dataManagers;
+    private IStateHandler stateHandler;
 
     @Override
     public void init() {
@@ -24,6 +26,7 @@ public class TemperatureDataManager extends IDataManager<ITemperatureValuable<?,
                 TemperatureDataValuable.class,new TemperatureDataValuable(this.player)//,
                 //TestManagerValuable.class, new TestManagerValuable(this.player)
         );
+        stateHandler = new TemperatureEffectHandler();
     }
 
     @Override
